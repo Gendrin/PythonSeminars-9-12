@@ -22,16 +22,24 @@ if __name__ == '__main__':
     print(emoji.emojize('Python is :thumbs_up:'))
     print(isOdd(1))
 
-    app = ApplicationBuilder().token(Token()).build()
+    # Создаем Updater и передаем ему токен вашего бота.
+    updater = Updater(Token())
+    # получаем диспетчера для регистрации обработчиков
+    dispatcher = updater.dispatcher
 
-    app.add_handler(CommandHandler("hi", hi_command))
-    app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(CommandHandler("time", time_command))
-    app.add_handler(CommandHandler("sum", sum_command))
+    #app = ApplicationBuilder().token(Token()).build()
+
+    dispatcher.add_handler(CommandHandler("hi", hi_command))
+    dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("time", time_command))
+    dispatcher.add_handler(CommandHandler("sum", sum_command))
+    #app.add_handler(MessageHandler,0)
     # Получение сообщений от юзера
     # @app.message_handler(content_types=["text"])
     # def handle_text(message):
     #     app.send_message(message.chat.id, 'Вы написали: ' + message.text)
 
-    app.run_polling()
+    #app.run_polling()
+    updater.start_polling()
+    updater.idle()
 
