@@ -5,6 +5,10 @@ import Test5 as ts5
 bot = telebot.TeleBot('5664442295:AAGp5Zv0mdVbKJCwRqd9Fc3qdI3zUobl-UM')
 startGame=False
 count_step=1
+
+@bot.message_handler(commands=["help"])
+def start(m, res=False):
+    bot.send_message(m.chat.id, 'На данный момент у меня есть три команды:\n /game\n /start\n /help\n')
 # Функция, обрабатывающая команду /start
 @bot.message_handler(commands=["start"])
 def start(m, res=False):
