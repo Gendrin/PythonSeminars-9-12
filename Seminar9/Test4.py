@@ -39,6 +39,13 @@ def handle_text(message):
             #bot.send_message(message.chat.id, 'Вы написали: ' + message.text)
             if ts5.tk_in(simbol,int(message.text))!=None:
                 bot.send_message(message.chat.id, ts5.draw_board(ts5.board))
+                win= ts5.check_win()
+                if win:
+                    bot.send_message(message.chat.id, 'Победили ' +win+' игра окончена!')
+                    startGame=False
+                if count_step==9:
+                    bot.send_message(message.chat.id, 'Ничья игра окончена!')
+                    startGame=False
                 count_step+=1
             else:
                 bot.send_message(message.chat.id, 'Это поле уже занято! ' + message.text)
