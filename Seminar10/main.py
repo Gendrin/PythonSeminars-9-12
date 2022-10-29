@@ -21,10 +21,10 @@ if __name__ == '__main__':
 
     start_handler = CommandHandler('start', start)
     msg_handler = MessageHandler(Filters.text & (~Filters.command), ControlInText)
-    msg_complex_handler=MessageHandler(Filters.text & (~Filters.command), mod_control_complex.ControlInTextComplexMenu)
+#    msg_complex_handler=MessageHandler(Filters.text & (~Filters.command), mod_control_complex.ControlInTextComplexMenu)
 
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(msg_handler)
-    dispatcher.add_handler(msg_complex_handler)
+#   dispatcher.add_handler(msg_complex_handler) - no work
     updater.start_polling()
 
