@@ -221,14 +221,22 @@ def ControlInText(update, context):
     if status == 50:
         B = exp.CheckInputFloat(text)
         if B != None:
-            context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text='Результат ' + str(A) + ' / ' + str(B) + ' = '  + str(model_div.div(A, B)))
-            status = 3
-            context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
-            return
+            if exp.ChekInputZero(B)!=None:
+                resultStr = 'Результат деления рациональных чисел ' + str(A) + ' / ' + str(B) + ' = ' \
+                            + str(model_div.div(A, B))
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                status = 3
+                context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
+                return
+            else:
+                resultStr = 'Второе число в операции деления равно 0, ошибка операции'
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                context.bot.send_message(chat_id=update.effective_chat.id, text='Повторите ввод второго числа!')
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text='Вы ввели не числовое значение, повторите ввод!')
+                                         text='Вы ввели не числовое значение, повторите ввод!')
             return
         # Целочисленное деление "//"
 
@@ -252,11 +260,19 @@ def ControlInText(update, context):
     if status == 52:
         B = exp.CheckInputFloat(text)
         if B != None:
-            context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text='Результат ' + str(A) + ' // ' + str(B) + ' = '  + str(model_div.IntDiv(A, B)))
-            status = 3
-            context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
-            return
+            if exp.ChekInputZero(B) != None:
+                resultStr = 'Результат целочисленного деления рациональных чисел ' + str(A) + ' // ' + str(B) + ' = ' \
+                            + str(model_div.IntDiv(A, B))
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                status = 3
+                context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
+                return
+            else:
+                resultStr = 'Второе число в операции деления равно 0, ошибка операции'
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                context.bot.send_message(chat_id=update.effective_chat.id, text='Повторите ввод второго числа!')
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,
                                      text='Вы ввели не числовое значение, повторите ввод!')
@@ -284,11 +300,19 @@ def ControlInText(update, context):
     if status == 54:
         B = exp.CheckInputFloat(text)
         if B != None:
-            context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text='Результат ' + str(A) + ' % ' + str(B) + ' = '  + str(model_div.RemDiv(A, B)))
-            status = 3
-            context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
-            return
+            if exp.ChekInputZero(B) != None:
+                resultStr = 'Результат остатка от деления рационального числа ' + str(A) + ' % ' + str(B) + ' = ' \
+                            + str(model_div.RemDiv(A, B))
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                status = 3
+                context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
+                return
+            else:
+                resultStr = 'Второе число в операции деления равно 0, ошибка операции'
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                context.bot.send_message(chat_id=update.effective_chat.id, text='Повторите ввод второго числа!')
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,
                                      text='Вы ввели не числовое значение, повторите ввод!')
@@ -510,13 +534,24 @@ def ControlInText(update, context):
         B_CM = exp.CheckInputFloat(text)
         if B_CM != None:
             B = complex(B_CV, B_CM)
-            context.bot.send_message(chat_id=update.effective_chat.id, text='Результат деления А = '+str(A)\
-                                                            +' / B = '+str(B)+' = '+str(model_div.div(A,B)))
-            status = 2
-            context.bot.send_message(chat_id=update.effective_chat.id, text=TCM())
-            return
+            if exp.ChekInputZero(B) != None:
+                resultStr = 'Результат деления комплексных чисел ' + str(A) + ' / ' + str(B) + ' = ' \
+                            + str(model_div.div(A, B))
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                status = 2
+                context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
+                return
+            else:
+                resultStr = 'Второе число в операции деления равно 0, ошибка операции'
+                context.bot.send_message(chat_id=update.effective_chat.id, text=resultStr)
+                lg(resultStr)
+                status=69
+                context.bot.send_message(chat_id=update.effective_chat.id, text='Повторите ввод второго числа!\n'
+                                                                    +'Введите действительую часть второго числа:')
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,
                                      text='Вы ввели не числовое значение, повторите ввод!')
             return
+
 
