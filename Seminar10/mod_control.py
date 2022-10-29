@@ -9,6 +9,7 @@ from model_sub import sub
 import model_mult
 import model_div
 
+
 status=0
 
 def start(update, context):
@@ -17,7 +18,7 @@ def start(update, context):
     status=0
 
 def ControlInText(update, context):
-    global status,A,B,fo
+    global status,A,B,A_CV,A_CM,B_CV,B_CM
     text = update.message.text
     # Movid from menu
     if status==0 and text=='1':
@@ -273,6 +274,118 @@ def ControlInText(update, context):
                                      text='Результат ' + str(A) + ' % ' + str(B) + ' = '  + str(model_div.RemDiv(A, B)))
             status = 3
             context.bot.send_message(chat_id=update.effective_chat.id, text=TDM())
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+
+# Работа с комплексными числами
+    if status == 2 and text == '1':  # Сложение
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Операция сложения комплексных чисел\n' + \
+                                                                        'Введите действительную часть первого числа:')
+        status = 55
+        return
+
+    if status == 55:
+        A_CV = exp.CheckInputFloat(text)
+        if A_CV != None:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Ввведите мнимую часть первого числа.')
+            status = 56
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+
+    if status == 56:
+        A_CM = exp.CheckInputFloat(text)
+        if A_CM != None:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Ввведите действительную часть второго числа')
+            status = 57
+            A = complex(A_CV,A_CM)
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+
+    if status == 57:
+        B_CV = exp.CheckInputFloat(text)
+        if B_CV != None:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Ввведите мнимую часть второго числа.')
+            status = 58
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+
+    if status == 58:
+        B_CM = exp.CheckInputFloat(text)
+        if B_CM != None:
+            B = complex(B_CV, B_CM)
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Результат сложения А = '+str(A)\
+                                                                        +' + B = '+str(B)+' = '+str(sum(A,B)))
+            status = 2
+            context.bot.send_message(chat_id=update.effective_chat.id, text=TCM())
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+# Вычитание комплексного числа
+
+    if status == 2 and text == '2':  # Сложение
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Операция вычитания комплексных чисел\n' + \
+                                                                        'Введите действительную часть первого числа:')
+        status = 59
+        return
+
+    if status == 59:
+        A_CV = exp.CheckInputFloat(text)
+        if A_CV != None:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Ввведите мнимую часть первого числа.')
+            status = 60
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+
+    if status == 60:
+        A_CM = exp.CheckInputFloat(text)
+        if A_CM != None:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Ввведите действительную часть второго числа')
+            status = 61
+            A = complex(A_CV,A_CM)
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+
+    if status == 61:
+        B_CV = exp.CheckInputFloat(text)
+        if B_CV != None:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Ввведите мнимую часть второго числа.')
+            status = 62
+            return
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text='Вы ввели не числовое значение, повторите ввод!')
+            return
+
+    if status == 62:
+        B_CM = exp.CheckInputFloat(text)
+        if B_CM != None:
+            B = complex(B_CV, B_CM)
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Результат вычитания А = '+str(A)\
+                                                                        +' - B = '+str(B)+' = '+str(sub(A,B)))
+            status = 2
+            context.bot.send_message(chat_id=update.effective_chat.id, text=TCM())
             return
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,

@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Определяем константы этапов разговора
-Start,Rational_Menu, PHOTO, LOCATION, BIO = range(5)
+CHECKM1,RMENU, CMENU, LOCATION, BIO = range(5)
 
 # функция обратного вызова точки входа в разговор
 def start(update, _):
@@ -35,10 +35,60 @@ def start(update, _):
     # переходим к этапу `GENDER`, это значит, что ответ
     # отправленного сообщения в виде кнопок будет список
     # обработчиков, определенных в виде значения ключа `GENDER`
-    return Rational_Menu
+    inText=update.message.text
+    return CHECKM1
 
-# Обрабатываем пол пользователя
-def rational_menu(update, _):
+def checkStartMenu(update, _):
+    inText = update.message.text
+    reply_keyboardR = [['1', '2', '3', '4', '5', '6', '0']]
+    reply_keyboardC = [['1', '2', '3', '4', '0']]
+    markup_keyR = ReplyKeyboardMarkup(reply_keyboardR, one_time_keyboard=True)
+    markup_keyC = ReplyKeyboardMarkup(reply_keyboardC, one_time_keyboard=True)
+    if inText=='1':
+        update.message.reply_text(
+            'Operations rational number:\n'
+            '1 - sum Сложение\n'
+            '2 - sub Вычитание\n'
+            '3 - mul Умножение\n'
+            '4 - div Деление\n'
+            '5 - pow Возведение в степень\n'
+            '6 - sqrt Квадратный корень\n'
+            '0 - previos menu\n',
+            reply_markup=markup_keyR,
+        )
+        return RMENU
+    if inText == '2':
+        update.message.reply_text(
+            'RRRRRRRRRRRRRRRRRRRRRRr:\n'
+            '1 - sum Сложение\n'
+            '2 - sub Вычитание\n'
+            '3 - mul Умножение\n'
+            '4 - div Деление\n'
+            '5 - pow Возведение в степень\n'
+            '6 - sqrt Квадратный корень\n'
+            '0 - previos menu\n',
+            reply_markup=markup_keyR,
+        )
+        #return CHECKM1
+        return CMENU
+    # else:
+    #     if inText=='2':
+    #         update.message.reply_text(
+    #             'Operations complex number:\n'
+    #             '1 - sum Сложение\n'
+    #             '2 - sub Вычитание\n'
+    #             '3 - mul Умножение\n'
+    #             '4 - div Деление\n',
+    #             '0 - previos menu\n',
+    #             reply_markup=markup_keyC,
+    #         )
+    #         return Rational_Menu
+        #return Complex_menu
+
+
+
+def drat_menu(update, _):
+    inText = update.message.text
     # Список кнопок для ответа
     reply_keyboard = [['1', '2','3','4','5','6','0']]
     # Создаем простую клавиатуру для ответа
@@ -49,7 +99,7 @@ def rational_menu(update, _):
     logger.info("Пол %s: %s", user.first_name, update.message.text)
     # Следующее сообщение с удалением клавиатуры `ReplyKeyboardRemove`
     update.message.reply_text(
-        'Operations rational number:\n'
+        'Рациональные вычисления:\n'
         '1 - sum Сложение\n'
         '2 - sub Вычитание\n'
         '3 - mul Умножение\n'
@@ -60,8 +110,34 @@ def rational_menu(update, _):
         reply_markup=markup_key,
     )
     # переходим к этапу `PHOTO`
-    if update.message.text=='0':
+    return CHECKM1
+
+def dcomp_menu(update,_):
+    inText = update.message.text
+    # Список кнопок для ответа
+    reply_keyboard = [['1', '2', '3', '4', '5', '6', '0']]
+    # Создаем простую клавиатуру для ответа
+    markup_key = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+    # определяем пользователя
+    user = update.message.from_user
+    # Пишем в журнал пол пользователя
+    logger.info("Пол %s: %s", user.first_name, update.message.text)
+    # Следующее сообщение с удалением клавиатуры `ReplyKeyboardRemove`
+    update.message.reply_text(
+        'Комплексные вычисления\n'
+        '1 - sum Сложение\n'
+        '2 - sub Вычитание\n'
+        '3 - mul Умножение\n'
+        '4 - div Деление\n'
+        '5 - pow Возведение в степень\n'
+        '6 - sqrt Квадратный корень\n'
+        '0 - previos menu\n',
+        reply_markup=markup_key,
+    )
+    # переходим к этапу `PHOTO`
+    if update.message.text == '0':
         return Start
+
 
 
 
@@ -167,14 +243,11 @@ if __name__ == '__main__':
         entry_points=[CommandHandler('start', start)],
         # этапы разговора, каждый со своим списком обработчиков сообщений
         states={
-            Start: [MessageHandler(Filters.regex('^(1|2|3|4|5|6|0)$'), start)],
-            Rational_Menu: [MessageHandler(Filters.regex('^(1|2)$'), rational_menu)],
-            PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
-            LOCATION: [
-                MessageHandler(Filters.location, location),
-                CommandHandler('skip', skip_location),
-            ],
-            BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
+            CHECKM1: [MessageHandler(Filters.regex('^(1|2|3|4|5|6|0)$'), checkStartMenu)],
+            RMENU: [MessageHandler(Filters.regex('^(1|2)$'), drat_menu)],
+            CMENU: [MessageHandler(Filters.regex('^(1|2)$'), dcomp_menu)]
+            #CheckSM: [MessageHandler(Filters.regex('^(1|2)$'), checkStartMenu)],
+
         },
         # точка выхода из разговора
         fallbacks=[CommandHandler('cancel', cancel)],
